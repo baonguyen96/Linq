@@ -48,8 +48,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Banas\BanasChallenge.cs" />
+    <Compile Include="Banas\BanasChallengeHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SoundCode\SoundCodeChallenge1.cs" />
+    <Compile Include="SoundCode\SoundCodeChallenge2.cs" />
+    <Compile Include="SoundCode\SoundCodeChallenge3.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

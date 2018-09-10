@@ -19,18 +19,18 @@ namespace Linq.SoundCode
 
 		public static void Problem2()
 		{
-			var playerWithDob =
-				"Jason Puncheon, 26/06/1986; Jos Hooiveld, 22/04/1983; Kelvin Davis, 29/09/1976; Luke Shaw, 12/07/1995; Gaston Ramirez, 02/12/1990; Adam Lallana, 10/05/1988"
-					.Split(';').Select(s => s.Trim());
-			var playersOrderByAge = from player in playerWithDob
-			                        orderby DateTime.ParseExact(player.Split(',')[1].Trim(), "dd/MM/yyyy",
-				                        CultureInfo.InvariantCulture) descending
-			                        select new
-			                        {
-				                        name = player.Split(',')[0],
-				                        age = (DateTime.Now - DateTime.ParseExact(player.Split(',')[1].Trim(),
-					                               "dd/MM/yyyy", CultureInfo.InvariantCulture)).Days / 356.25
-			                        };
+			var playersOrderByAge =
+				from player in
+					"Jason Puncheon, 26/06/1986; Jos Hooiveld, 22/04/1983; Kelvin Davis, 29/09/1976; Luke Shaw, 12/07/1995; Gaston Ramirez, 02/12/1990; Adam Lallana, 10/05/1988"
+						.Split(';').Select(s => s.Trim())
+				orderby DateTime.ParseExact(player.Split(',')[1].Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture)
+					descending
+				select new
+				{
+					name = player.Split(',')[0],
+					age = (DateTime.Now - DateTime.ParseExact(player.Split(',')[1].Trim(),
+						       "dd/MM/yyyy", CultureInfo.InvariantCulture)).Days / 356.25
+				};
 			foreach (var p in playersOrderByAge)
 			{
 				Console.WriteLine($"{p.name,-30}{p.age}");
@@ -83,8 +83,13 @@ namespace Linq.SoundCode
 			var posNum =
 				(from n in "2,5,7-10,11,17-18".Split(',')
 				 let r = n.Split('-')
-				 select (from m in Enumerable.Range(int.Parse(r[0]), int.Parse(r[r.Length - 1]) - int.Parse(r[0]) + 1)
-				         select m)).Flatten();
+				 let first = int.Parse(r[0])
+				 let last = int.Parse(r[r.Length - 1])
+				 select (
+					 from m in Enumerable.Range(first, last - first + 1)
+					 select m
+				 ))
+				.Flatten();
 
 			foreach (var n in posNum)
 			{

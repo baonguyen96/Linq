@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MoreLinq;
 
 namespace Linq.SoundCode
 {
@@ -18,7 +16,18 @@ namespace Linq.SoundCode
 
 		public static void Problem2()
 		{
-			throw new Exception("Stuck");
+			var moves = from row in Enumerable.Range('a', 8)
+			            from col in Enumerable.Range('1', 8)
+			            let dx = Math.Abs(row - 'c')
+			            let dy = Math.Abs(col - '6')
+			            where dx == dy && dx != 0
+			            select $"{(char) row}{(char) col}";
+
+			foreach (var m in moves)
+			{
+				Console.WriteLine(m);
+			}
+
 		}
 
 
@@ -68,7 +77,16 @@ namespace Linq.SoundCode
 
 		public static void Problem6()
 		{
-			throw new Exception("stuck");
+			var rs = from token in "A5B10CD3".GroupAdjacent(char.IsDigit) select token;
+
+			foreach (var r in rs)
+			{
+				Console.WriteLine("New group:");
+				foreach (var c in r)
+				{
+					Console.WriteLine($"   {c}");
+				}
+			}
 		}
 
 	}
