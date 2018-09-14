@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using MoreLinq;
+using System.Text.RegularExpressions;
 
 namespace Linq.SoundCode
 {
@@ -27,7 +27,6 @@ namespace Linq.SoundCode
 			{
 				Console.WriteLine(m);
 			}
-
 		}
 
 
@@ -77,17 +76,16 @@ namespace Linq.SoundCode
 
 		public static void Problem6()
 		{
-			var rs = from token in "A5B10CD3".GroupAdjacent(char.IsDigit) select token;
+			var rs =
+				from gr in (
+					Regex.Matches("A5B10CD3", "\\D\\d+|\\D").Cast<Match>().Select(m => m.Value)
+				)
+				select new string(gr[0], gr.Length <= 1 ? 1 : int.Parse(gr.Substring(1)));
 
 			foreach (var r in rs)
 			{
-				Console.WriteLine("New group:");
-				foreach (var c in r)
-				{
-					Console.WriteLine($"   {c}");
-				}
+				Console.WriteLine(r);
 			}
 		}
-
 	}
 }
