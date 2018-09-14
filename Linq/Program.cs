@@ -6,7 +6,7 @@ namespace Linq
 	{
 		static void Main(string[] args)
 		{
-			SoundCodeChallenge2.Problem6();
+			SoundCodeChallenge3.Problem6();
 		}
 	}
 }

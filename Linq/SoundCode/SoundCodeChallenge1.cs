@@ -23,12 +23,12 @@ namespace Linq.SoundCode
 				from player in
 					"Jason Puncheon, 26/06/1986; Jos Hooiveld, 22/04/1983; Kelvin Davis, 29/09/1976; Luke Shaw, 12/07/1995; Gaston Ramirez, 02/12/1990; Adam Lallana, 10/05/1988"
 						.Split(';').Select(s => s.Trim())
-				orderby DateTime.ParseExact(player.Split(',')[1].Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture)
-					descending
+				let tokens = player.Split(',')
+				orderby DateTime.ParseExact(tokens[1].Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
 				select new
 				{
-					name = player.Split(',')[0],
-					age = (DateTime.Now - DateTime.ParseExact(player.Split(',')[1].Trim(),
+					name = tokens[0],
+					age = (DateTime.Now - DateTime.ParseExact(tokens[1].Trim(),
 						       "dd/MM/yyyy", CultureInfo.InvariantCulture)).Days / 356.25
 				};
 			foreach (var p in playersOrderByAge)
@@ -69,6 +69,7 @@ namespace Linq.SoundCode
 					first = TimeSpan.Parse("0:" + f),
 					second = TimeSpan.Parse("0:" + s)
 				}).Select(t => t.second - t.first);
+
 			foreach (var t in timeSwim)
 			{
 				Console.WriteLine(t);

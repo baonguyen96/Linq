@@ -108,7 +108,17 @@ namespace Linq.SoundCode
 
 		public static void Problem6()
 		{
-			throw new Exception("stuck");
+			var rs =
+				"0:00:00-0:00:05;0:55:12-1:05:02;1:37:47-1:37:51"
+					.Split('-', ';')
+					.Prepend("0:00:00")
+					.Append("2:00:00")
+					.Batch(2, b => b.ToArray())
+					.Where(s => s[0] != s[1])
+					.Select(s => $"{s[0]}-{s[1]}")
+					.Aggregate((x, y) => $"{x};{y}");
+
+			Console.WriteLine(rs);
 		}
 	}
 }
