@@ -1,4 +1,6 @@
-﻿using Linq.SoundCode;
+﻿using System;
+using Linq.FlatFile;
+using Linq.SoundCode;
 
 namespace Linq
 {
@@ -6,7 +8,8 @@ namespace Linq
 	{
 		static void Main(string[] args)
 		{
-			SoundCodeChallenge3.Problem6();
+			var flatFile = new BattingFlatFile(@"../../FlatFile/Resources/Batting.csv", ',', "0");
+			flatFile.Problem10();
 		}
 	}
 }

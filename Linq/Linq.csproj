@@ -50,6 +50,9 @@
   <ItemGroup>
     <Compile Include="Banas\BanasChallenge.cs" />
     <Compile Include="Banas\BanasChallengeHelper.cs" />
+    <Compile Include="FlatFile\BattingFlatFile.cs" />
+    <Compile Include="FlatFile\Model\FlatFileBase.cs" />
+    <Compile Include="FlatFile\Model\FlatFileBaseComponents.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoundCode\SoundCodeChallenge1.cs" />
@@ -58,6 +61,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="FlatFile\Resources\Batting.csv" />
+    <None Include="FlatFile\Resources\sample.csv" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
