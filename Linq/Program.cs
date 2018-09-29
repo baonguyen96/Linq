@@ -9,7 +9,7 @@ namespace Linq
 		static void Main(string[] args)
 		{
 			var flatFile = new BattingFlatFile(@"../../FlatFile/Resources/Batting.csv", ',', "0");
-			flatFile.Problem10();
+			flatFile.Problem17();
 		}
 	}
 }

@@ -276,5 +276,215 @@ namespace Linq.FlatFile
 			Console.WriteLine(string.Join("\n",
 				result.Select(r => $"{r.firstName}{Delimiter}{r.lastName}{Delimiter}{r.obp:#.##}%")));
 		}
+
+
+		public void Problem11()
+		{
+			// Top 8 highest averages in 2013 with at least 300 PAs? (Dataframe, first name, last name, average, descending by average)
+			var result =
+				(from player in
+				 (
+					 from record in Records
+					 where int.Parse(record.GetItemWithKey("yearid").Value) == 2013
+					 group record by new
+					 {
+						 playerId = record.GetItemWithKey("playerid").Value,
+						 firstName = record.GetItemWithKey("namefirst").Value,
+						 lastName = record.GetItemWithKey("namelast").Value
+					 }
+					 into g
+					 select new
+					 {
+						 g.Key.playerId,
+						 g.Key.firstName,
+						 g.Key.lastName,
+						 pa = g.Sum(_ => int.Parse(_.GetItemWithKey("ab").Value)) +
+						      g.Sum(_ => int.Parse(_.GetItemWithKey("bb").Value)) +
+						      g.Sum(_ => int.Parse(_.GetItemWithKey("hbp").Value)) +
+						      g.Sum(_ => int.Parse(_.GetItemWithKey("sf").Value)) +
+						      g.Sum(_ => int.Parse(_.GetItemWithKey("sh").Value)),
+						 baTop = g.Sum(_ => int.Parse(_.GetItemWithKey("h").Value)),
+						 baBottom = g.Sum(_ => int.Parse(_.GetItemWithKey("ab").Value))
+					 }
+				 )
+				 where player.pa > 300
+				 let ba = player.baBottom == 0 ? 0 : ((double) player.baTop / player.baBottom) * 100
+				 orderby ba descending
+				 select new
+				 {
+					 player.firstName,
+					 player.lastName,
+					 ba
+				 }).Take(8);
+
+			Console.WriteLine(string.Join("\n",
+				result.Select(r => $"{r.firstName}{Delimiter}{r.lastName}{Delimiter}{r.ba:#.##}%")));
+		}
+
+		public void Problem12()
+		{
+			// Leaders in hits from 1940 up to and including 1949. (Dataframe, first name, last name, number of hits) (top 5 players most hit in the time frame)
+			var result =
+				(from player in
+				 (
+					 from record in Records
+					 let year = int.Parse(record.GetItemWithKey("yearid").Value)
+					 where year >= 1940 && year <= 1949
+					 group record by new
+					 {
+						 playerId = record.GetItemWithKey("playerid").Value,
+						 firstName = record.GetItemWithKey("namefirst").Value,
+						 lastName = record.GetItemWithKey("namelast").Value
+					 }
+					 into g
+					 select new
+					 {
+						 g.Key.firstName,
+						 g.Key.lastName,
+						 hit = g.Sum(_ => int.Parse(_.GetItemWithKey("h").Value))
+					 }
+				 )
+				 orderby player.hit descending
+				 select player).Take(5);
+
+			Console.WriteLine(string.Join("\n",
+				result.Select(r => $"{r.firstName}{Delimiter}{r.lastName}{Delimiter}{r.hit}")));
+		}
+
+
+		public void Problem13()
+		{
+			// Who led MLB with the most hits the most times?  And how many times?  (Dataframe, Number of hits)
+			var result =
+				(from a in
+				 (
+					 // player with best hit per year
+					 from player in
+					 (
+						 // hit per year per player
+						 from record in Records
+						 group record by new
+						 {
+							 playerId = record.GetItemWithKey("playerid").Value,
+							 yearId = record.GetItemWithKey("yearid").Value
+						 }
+						 into g
+						 select new
+						 {
+							 g.Key.playerId,
+							 g.Key.yearId,
+							 hit = g.Sum(_ => int.Parse(_.GetItemWithKey("h").Value))
+						 }
+					 )
+					 group player by player.yearId
+					 into g
+					 select g.OrderByDescending(x => x.hit).First()
+				 )
+				 group a by a.playerId
+				 into g
+				 orderby g.Count() descending
+				 select new
+				 {
+					 playerId = g.Key,
+					 count = g.Count()
+				 }).First();
+
+			Console.WriteLine(string.Join("\n", $"{result.playerId}{Delimiter}{result.count}"));
+		}
+
+
+		public void Problem14()
+		{
+			// Which players have played the most games for their careers?  Top 5 first name, last name, descending by games played presented as a dataframe
+			var result =
+				(from player in
+				 (
+					 from record in Records
+					 group record by new
+					 {
+						 playerId = record.GetItemWithKey("playerid").Value,
+						 firstName = record.GetItemWithKey("namefirst").Value,
+						 lastName = record.GetItemWithKey("namelast").Value
+					 }
+					 into g
+					 select new
+					 {
+						 g.Key.firstName,
+						 g.Key.lastName,
+						 games = g.Sum(_ => int.Parse(_.GetItemWithKey("g").Value))
+					 }
+				 )
+				 orderby player.games descending
+				 select player).Take(5);
+
+			Console.WriteLine(string.Join("\n",
+				result.Select(r => $"{r.firstName}{Delimiter}{r.lastName}{Delimiter}{r.games}")));
+		}
+
+		public void Problem15()
+		{
+			// How many players have had more 3000 or more hits for their careers while also hitting 500 or more HRs?  Just a number is okay here
+			var result =
+				(from player in
+				 (
+					 from record in Records
+					 group record by record.GetItemWithKey("playerid").Value
+					 into g
+					 select new
+					 {
+						 g.Key,
+						 hit = g.Sum(_ => int.Parse(_.GetItemWithKey("h").Value)),
+						 hr = g.Sum(_ => int.Parse(_.GetItemWithKey("hr").Value)),
+					 }
+				 )
+				 where player.hit >= 3000 && player.hr >= 500
+				 select player).Count();
+
+			Console.WriteLine(result);
+		}
+
+		public void Problem16()
+		{
+			// How many HRs were hit during the entire 1988 season?  Just a number is okay here
+			var result =
+				(from record in Records
+				 where record.GetItemWithKey("yearid").Value == "1988"
+				 select int.Parse(record.GetItemWithKey("hr").Value)).Sum();
+
+			Console.WriteLine(result);
+		}
+
+		public void Problem17()
+		{
+			// Please filter out and show me the top 3 average seasons by Wade Boggs during his career in seasons in which he had at least 500 or more ABs.  Dataframe, first name, last name, average, descending by average
+			var result =
+				(from player in
+				 (
+					 from record in Records
+					 where record.GetItemWithKey("namefirst").Value == "Wade" &&
+					       record.GetItemWithKey("namelast").Value == "Boggs" &&
+					       int.Parse(record.GetItemWithKey("ab").Value) >= 500
+					 group record by record.GetItemWithKey("yearid").Value
+					 into g
+					 select new
+					 {
+						 year = g.Key,
+						 baTop = g.Sum(_ => int.Parse(_.GetItemWithKey("h").Value)),
+						 baBottom = g.Sum(_ => int.Parse(_.GetItemWithKey("ab").Value))
+					 }
+				 )
+				 let ba = player.baBottom == 0 ? 0 : ((double) player.baTop / player.baBottom) * 100
+				 orderby ba descending
+				 select new
+				 {
+					 firstName = "Wade",
+					 lastName = "Boggs",
+					 player.year,
+					 ba
+				 }).Take(3);
+
+			Console.WriteLine(string.Join("\n",
+				result.Select(r => $"{r.firstName}{Delimiter}{r.lastName}{Delimiter}{r.year}{Delimiter}{r.ba:#.##}%")));
+		}
 	}
 }
