@@ -64,6 +64,7 @@
     <None Include="FlatFile\Resources\Batting.csv" />
     <None Include="FlatFile\Resources\sample.csv" />
     <None Include="packages.config" />
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

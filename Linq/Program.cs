@@ -1,15 +1,13 @@
-﻿using System;
-using Linq.FlatFile;
-using Linq.SoundCode;
+﻿using Linq.FlatFile;
 
 namespace Linq
 {
-	class Program
+	internal class Program
 	{
-		static void Main(string[] args)
+		private static void Main(string[] args)
 		{
 			var flatFile = new BattingFlatFile(@"../../FlatFile/Resources/Batting.csv", ',', "0");
-			flatFile.Problem17();
+			flatFile.Problem25();
 		}
 	}
 }
