@@ -6,8 +6,8 @@ namespace Linq
 	{
 		private static void Main(string[] args)
 		{
-			var flatFile = new BattingFlatFile(@"../../FlatFile/Resources/Batting.csv", ',', "0");
-			flatFile.Problem25();
+			var flatFile = new BankListFlatFile(@"../../FlatFile/Resources/BankList.csv", '~', "0");
+			flatFile.Problem12();
 		}
 	}
 }

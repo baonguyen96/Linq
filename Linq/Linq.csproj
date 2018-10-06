@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Banas\BanasChallenge.cs" />
     <Compile Include="Banas\BanasChallengeHelper.cs" />
+    <Compile Include="FlatFile\BankListFlatFile.cs" />
     <Compile Include="FlatFile\BattingFlatFile.cs" />
     <Compile Include="FlatFile\Model\FlatFileBase.cs" />
     <Compile Include="FlatFile\Model\FlatFileBaseComponents.cs" />
@@ -61,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="FlatFile\Resources\banklist.csv" />
     <None Include="FlatFile\Resources\Batting.csv" />
     <None Include="FlatFile\Resources\sample.csv" />
     <None Include="packages.config" />
